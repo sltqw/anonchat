@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Private Chat - raitysa & nofi</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,40 +14,31 @@
     .animate-fade-in {
       animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .bg-layer {
-      transition: opacity 1.5s ease-in-out;
-    }
     .glass-panel {
-      background: rgba(20, 25, 40, 0.45);
+      background: rgba(20, 25, 40, 0.55);
       backdrop-filter: blur(40px) saturate(200%);
       -webkit-backdrop-filter: blur(40px) saturate(200%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    .glass-input {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
-    .glass-btn {
-      background: rgba(255, 255, 255, 0.1);
+    .glass-input {
+      background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       transition: all 0.2s ease;
     }
     .glass-btn:active {
       transform: scale(0.92);
       background: rgba(255, 255, 255, 0.25);
     }
-    .glass-msg-in {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
     .glass-msg-out {
-      background: rgba(0, 122, 255, 0.45);
+      background: rgba(0, 122, 255, 0.55);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       border: 1px solid rgba(255, 255, 255, 0.25);
@@ -59,9 +50,13 @@
       background: rgba(255, 255, 255, 0.2);
       border-radius: 9999px;
     }
+    /* Телефон төменгі сызығынан сақтау (Safe Area) */
+    .pb-safe {
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+    }
   </style>
 </head>
-<body class="h-screen w-screen overflow-hidden bg-black text-white font-sans select-none antialiased">
+<body class="h-[100dvh] w-screen overflow-hidden bg-black text-white font-sans select-none antialiased flex flex-col">
 
   <!-- Background layer -->
   <div id="bg-container" class="absolute inset-0 z-0 overflow-hidden">
@@ -70,16 +65,16 @@
   </div>
 
   <!-- Main Container -->
-  <div class="relative z-10 flex flex-col h-full max-w-2xl mx-auto px-2 sm:px-4 py-2 sm:py-6">
+  <div class="relative z-10 flex flex-col h-full max-w-2xl mx-auto w-full px-2 sm:px-4 pt-2 sm:pt-4">
     
     <!-- Top Bar -->
-    <header class="glass-panel rounded-full px-4 py-2.5 mb-3 flex items-center justify-between shadow-2xl backdrop-blur-3xl">
+    <header class="glass-panel rounded-full px-4 py-2.5 mb-2 flex items-center justify-between shadow-2xl backdrop-blur-3xl shrink-0">
       
       <!-- Сол жақ: raitysa және Анон чат қатар тұрады -->
-      <div class="flex items-center gap-4 overflow-x-auto custom-scrollbar py-1">
+      <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-0.5">
         
         <!-- raitysa чаты -->
-        <div class="flex items-center gap-2.5 cursor-pointer bg-white/10 px-3 py-1.5 rounded-full border border-white/20 transition-all hover:bg-white/20" onclick="switchChat('raitysa')" id="tab-raitysa">
+        <div class="flex items-center gap-2 cursor-pointer bg-white/10 px-3 py-1.5 rounded-full border border-white/20 transition-all hover:bg-white/20" onclick="switchChat('raitysa')" id="tab-raitysa">
           <div class="relative">
             <img src="aqwut.gif" class="w-8 h-8 rounded-full object-cover border border-white/30" alt="raitysa">
             <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-black/60 rounded-full"></span>
@@ -91,7 +86,7 @@
         </div>
 
         <!-- Анон чат -->
-        <div class="flex items-center gap-2.5 cursor-pointer px-3 py-1.5 rounded-full border border-transparent transition-all hover:bg-white/10" onclick="switchChat('anon')" id="tab-anon">
+        <div class="flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-full border border-transparent transition-all hover:bg-white/10" onclick="switchChat('anon')" id="tab-anon">
           <div class="relative">
             <img src="rpp.gif" class="w-8 h-8 rounded-full object-cover border border-white/30" alt="Анон чат">
             <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-black/60 rounded-full"></span>
@@ -105,7 +100,7 @@
       </div>
 
       <!-- Оң жақ: nofi(я) профилін ашатын түйме -->
-      <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+      <div class="flex items-center gap-2 shrink-0 ml-1">
         <button onclick="toggleMyProfile()" class="glass-btn w-9 h-9 rounded-full flex items-center justify-center text-white/90">
           <i class="fa-solid fa-user text-xs"></i>
         </button>
@@ -114,26 +109,26 @@
 
     <!-- Chat Messages -->
     <main id="chat-box" class="flex-1 overflow-y-auto custom-scrollbar px-2 py-2 space-y-3 flex flex-col">
-      <div class="text-center my-3">
+      <div class="text-center my-2">
         <span id="chat-subtitle" class="glass-panel text-[11px] px-3 py-1 rounded-full text-white/60">
           Приватный сквозной чат с raitysa
         </span>
       </div>
     </main>
 
-    <!-- Message Input Bar -->
-    <footer class="mt-2">
-      <form id="chat-form" onsubmit="sendMessage(event)" class="glass-panel rounded-full p-1.5 flex items-center gap-2 shadow-2xl">
+    <!-- Message Input Bar (Телефондарда басуға ынғайлы етіп көтерілді) -->
+    <footer class="mt-auto pb-safe pt-1">
+      <form id="chat-form" onsubmit="sendMessage(event)" class="glass-panel rounded-full p-1.5 flex items-center gap-2 shadow-2xl relative z-20">
         <input 
           type="text" 
           id="msg-input" 
           placeholder="Сообщение..." 
           autocomplete="off"
-          class="flex-1 bg-transparent px-4 py-2 text-sm text-white placeholder-white/40 focus:outline-none"
+          class="flex-1 bg-transparent px-4 py-2.5 text-sm text-white placeholder-white/50 focus:outline-none"
         >
         <button 
           type="submit" 
-          class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 active:scale-90 transition-all flex items-center justify-center text-white shadow-lg border border-white/20"
+          class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 active:scale-90 transition-all flex items-center justify-center text-white shadow-lg border border-white/20 shrink-0"
         >
           <i class="fa-solid fa-arrow-up text-sm"></i>
         </button>
@@ -142,7 +137,7 @@
 
   </div>
 
-  <!-- Profile Modal (raitysa - Админ & 2FA, «в сети» алып тасталды) -->
+  <!-- Profile Modal (raitysa - Админ & 2FA) -->
   <div id="profile-modal" class="fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="glass-panel w-[90%] max-w-sm rounded-3xl p-6 relative border border-white/20 shadow-2xl scale-95 transition-transform duration-300" id="profile-card">
       <button onclick="toggleProfile()" class="absolute top-4 right-4 glass-btn w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white">
@@ -179,7 +174,6 @@
             <i class="fa-regular fa-copy text-white/50 text-xs"></i>
           </div>
 
-          <!-- 2FA қорғанысы -->
           <div class="glass-input p-3.5 rounded-2xl flex items-center justify-between">
             <div>
               <p class="text-[10px] uppercase tracking-wider text-white/50">Безопасность</p>
@@ -198,7 +192,7 @@
     </div>
   </div>
 
-  <!-- Profile Modal (Анон чат - rpp.gif & 2FA группа) -->
+  <!-- Profile Modal (Анон чат) -->
   <div id="anon-profile-modal" class="fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="glass-panel w-[90%] max-w-sm rounded-3xl p-6 relative border border-white/20 shadow-2xl scale-95 transition-transform duration-300" id="anon-profile-card">
       <button onclick="toggleAnonProfile()" class="absolute top-4 right-4 glass-btn w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white">
@@ -225,7 +219,6 @@
             <i class="fa-regular fa-copy text-white/50 text-xs"></i>
           </div>
 
-          <!-- 2FA қорғанысы група үшін -->
           <div class="glass-input p-3.5 rounded-2xl flex items-center justify-between">
             <div>
               <p class="text-[10px] uppercase tracking-wider text-white/50">Групповая безопасность</p>
@@ -244,7 +237,7 @@
     </div>
   </div>
 
-  <!-- My Profile Modal (nofi(я) - JPG) -->
+  <!-- My Profile Modal (nofi(я)) -->
   <div id="my-profile-modal" class="fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="glass-panel w-[90%] max-w-sm rounded-3xl p-6 relative border border-white/20 shadow-2xl scale-95 transition-transform duration-300" id="my-profile-card">
       <button onclick="toggleMyProfile()" class="absolute top-4 right-4 glass-btn w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white">
@@ -298,7 +291,7 @@
   </div>
 
   <!-- Notification Toast -->
-  <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 glass-panel px-4 py-2 rounded-full text-xs text-white opacity-0 transition-opacity duration-300 pointer-events-none">
+  <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 glass-panel px-4 py-2 rounded-full text-xs text-white opacity-0 transition-opacity duration-300 pointer-events-none">
     Скопировано
   </div>
 
@@ -312,12 +305,12 @@
       const subtitle = document.getElementById('chat-subtitle');
 
       if (chatName === 'raitysa') {
-        tabRaitysa.className = 'flex items-center gap-2.5 cursor-pointer bg-white/10 px-3 py-1.5 rounded-full border border-white/20 transition-all hover:bg-white/20';
-        tabAnon.className = 'flex items-center gap-2.5 cursor-pointer px-3 py-1.5 rounded-full border border-transparent transition-all hover:bg-white/10';
+        tabRaitysa.className = 'flex items-center gap-2 cursor-pointer bg-white/10 px-3 py-1.5 rounded-full border border-white/20 transition-all hover:bg-white/20';
+        tabAnon.className = 'flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-full border border-transparent transition-all hover:bg-white/10';
         subtitle.innerText = 'Приватный сквозной чат с raitysa';
       } else {
-        tabAnon.className = 'flex items-center gap-2.5 cursor-pointer bg-white/10 px-3 py-1.5 rounded-full border border-white/20 transition-all hover:bg-white/20';
-        tabRaitysa.className = 'flex items-center gap-2.5 cursor-pointer px-3 py-1.5 rounded-full border border-transparent transition-all hover:bg-white/10';
+        tabAnon.className = 'flex items-center gap-2 cursor-pointer bg-white/10 px-3 py-1.5 rounded-full border border-white/20 transition-all hover:bg-white/20';
+        tabRaitysa.className = 'flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-full border border-transparent transition-all hover:bg-white/10';
         subtitle.innerText = 'Групповой анонимный чат';
       }
     }
